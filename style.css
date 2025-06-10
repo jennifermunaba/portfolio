@@ -211,20 +211,22 @@ body {
   
   /* Individual tags */
   .tag {
-    background-color: #eee;
-    color: #333;
-    padding: 0.5rem 1.25rem;
-    border-radius: 999px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    user-select: none;
-    box-sizing: border-box;
-    text-align: center;
-  
-    flex: 0 1 auto; /* Allow tags to wrap based on content */
-    max-width: 100%; /* Prevent overflow */
-    white-space: nowrap; /* Keep tag content on one line */
-  }
+  background-color: #eee;
+  color: #333;
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  user-select: none;
+
+  /* Prevent the box from shrinking smaller than content */
+  white-space: nowrap;    /* Keep text in one line */
+  flex: 0 1 auto;         /* Allow shrinking but not below content width */
+  min-width: max-content; /* Ensures min width fits the text */
+
+  box-sizing: border-box;
+  text-align: center;
+}
   
   
   /* Ensuring the tags in the second row are centered */
