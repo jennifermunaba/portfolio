@@ -186,12 +186,12 @@ body {
 
 /* Window Page Link Dark Mode*/
   .window a {
-    color: rgb(212, 97, 212);
+    color: rgb(98, 176, 255);
     text-decoration: none;
   }
 
   .window a:hover {
-    color: rgb(181, 10, 181);
+    color: dodgerblue;
   }
 
   
@@ -285,7 +285,7 @@ body.dark-mode .tag:hover {
 }
 
 a {
-  
+
 
 }
 
