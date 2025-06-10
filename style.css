@@ -10,7 +10,7 @@ body {
   }
   
   .dark-mode-toggle {
-    position: fixed;
+    position: absolute;
     top: 1rem;
     right: 1rem;
     cursor: pointer;
@@ -27,7 +27,7 @@ body {
   .logo {
     width: 40px;
     height: 40px;
-    position: fixed;
+    position: absolute;
   }
   
   /* Panel that holds the buttons */
@@ -54,6 +54,12 @@ body {
     justify-content: center;
     gap: 1rem;
   }
+
+  .button-container .app-button:hover {
+    transform: scale(1.05); /* scales image to 110% on hover */
+    transition: 0.4s ease;
+  }
+  
   
   
   
@@ -82,9 +88,7 @@ body {
     width: 60px;
     transition: transform 0.3s ease;
   }
-  .app-button:hover .button-image {
-    transform: scale(1.1); /* scales image to 110% on hover */
-  }
+  
   
   /* Floating window */
   .window {
@@ -308,4 +312,23 @@ a {
   display: block;
   border-radius: 12px;    /* Match container rounding */
 }
+
+/* Logo should be on top of background but behind popups */
+.logo {
+  position: relative;
+  z-index: 10;
+}
+
+/* Dark mode toggle should be above the logo */
+#darkModeToggle {
+  z-index: 20;
+}
+
+/* Pop-up windows should be above everything */
+.window {
+  position: fixed;
+  z-index: 1000;
+}
+
+
 

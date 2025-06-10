@@ -11,7 +11,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Pacifico&family=Roboto+Flex:opsz,wght@8..144,100..1000&family=Shadows+Into+Light&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />   <!-- FAVICON -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 </head>
 
@@ -25,9 +27,10 @@
   data-dark="Icons/munaba_logo_white.svg"></a>
 </div>
 
-<div class="dark-mode-toggle" onclick="toggleDarkMode()">
-    <img id="modeIcon" src="Icons/sun_icon.svg" alt="Toggle Dark Mode" />
-  </div>
+<div id="darkModeToggle" class="dark-mode-toggle" onclick="toggleDarkMode()">
+  <img id="modeIcon" src="Icons/sun_icon.svg" alt="Toggle Dark Mode" />
+</div>
+
   
 
   <!-- Button Panel Container -->
@@ -85,9 +88,9 @@
   </div>
 
   <script>
-    let zIndex = 1000;
-   
-    function toggleDarkMode() {
+  let zIndex = 1000;
+
+  function toggleDarkMode() {
   const body = document.body;
   const icon = document.getElementById("modeIcon");
 
@@ -113,7 +116,7 @@
 
 
 function openWindow(title) {
-  // Check if the window is already open
+  // Check if window already open
   const existingWindow = document.querySelector(`.window.window-${title.toLowerCase()}`);
   if (existingWindow) {
     existingWindow.style.zIndex = ++zIndex;
@@ -124,8 +127,8 @@ function openWindow(title) {
   windowEl.className = `window window-${title.toLowerCase()}`;
   windowEl.style.zIndex = ++zIndex;
 
-  // New Window
   let contentHTML = '';
+
 
   if (title === 'About') {
     contentHTML = `
@@ -136,95 +139,90 @@ function openWindow(title) {
   } else if (title === 'Project') {
     contentHTML = `
       <h2>My Projects</h2>
-      <p>Projects and their descriptions, have linked...</p>
-     
-      <section>
-      <img src="Project 1 Image">
-      <p><a href="Project1">Project 1</a></p>
-      </section>
-      
-      <section>
-      <p>Project 2</p>
-      </section>
+      <p>Projects and their descriptions...</p>
     `;
   } else if (title === 'Contact') {
     contentHTML = `
-      <h2>Let's Connect</h2>
+      <h2>Contact</h2>
+      <p><a href="mailto:jennifermunaba@gmail.com">jennifermunaba@gmail.com</a></p>
       <p><a href="https://www.linkedin.com/in/jennifermunaba/">LinkedIn</a></p>
-      <p><a href=mailto:"jennifermunaba@gmail.com">jennifermunaba@gmail.com</a></p>
     `;
   } else {
-    contentHTML = `<p>This is the ${title} window. Add any content you want here.</p>`;
+    contentHTML = `<p>This is the ${title} window. Add any content here.</p>`;
   }
 
   windowEl.innerHTML = `
     <div class="window-header">
       <div class="window-title">${title}</div>
-      <button class="window-close" onclick="this.closest('.window').remove()"></button>
+      <button class="window-close" title="Close"></button>
     </div>
-    <div class="window-content">
+    <div class="window-content" style="padding:1rem; overflow:auto;">
       ${contentHTML}
     </div>
   `;
 
-    // Size of the window (adjust based on your CSS or desired size)
+  // Desktop: position with random scatter and make draggable
+  if (window.innerWidth > 768) {
     const windowWidth = 400;
     const windowHeight = 300;
-
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
-
     const centerX = (viewportWidth - windowWidth) / 2;
     const centerY = (viewportHeight - windowHeight) / 2;
-
     const scatterRange = 100;
     const randomOffsetX = Math.floor(Math.random() * scatterRange * 2) - scatterRange;
     const randomOffsetY = Math.floor(Math.random() * scatterRange * 2) - scatterRange;
-
-    windowEl.style.position = 'fixed';
     windowEl.style.left = `${centerX + randomOffsetX}px`;
     windowEl.style.top = `${centerY + randomOffsetY}px`;
 
+    makeDraggable(windowEl);
+  } else {
+    // Mobile: fixed full screen top left, no dragging needed
+    windowEl.style.top = '0';
+    windowEl.style.left = '0';
+    windowEl.style.width = '100vw';
+    windowEl.style.height = '100vh';
+  }
 
   document.body.appendChild(windowEl);
-  makeDraggable(windowEl);
+
+  // Close button event
+  windowEl.querySelector('.window-close').addEventListener('click', () => {
+    windowEl.remove();
+  });
 }
 
+function makeDraggable(el) {
+  const header = el.querySelector('.window-header');
+  let offsetX = 0, offsetY = 0, isDown = false;
 
+  header.addEventListener('mousedown', (e) => {
+    if (window.innerWidth <= 768) return; // no drag on mobile
 
+    isDown = true;
+    offsetX = e.clientX - el.offsetLeft;
+    offsetY = e.clientY - el.offsetTop;
+    el.style.zIndex = ++zIndex;
+    header.style.cursor = 'grabbing';
+  });
 
-    function makeDraggable(el) {
-      const header = el.querySelector('.window-header');
-      let offsetX = 0, offsetY = 0, isDown = false;
+  document.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    el.style.left = `${e.clientX - offsetX}px`;
+    el.style.top = `${e.clientY - offsetY}px`;
+  });
 
-      header.addEventListener('mousedown', (e) => {
-        isDown = true;
-        offsetX = e.clientX - el.offsetLeft;
-        offsetY = e.clientY - el.offsetTop;
-        el.style.zIndex = ++zIndex;
-      });
-
-      document.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-        el.style.left = `${e.clientX - offsetX}px`;
-        el.style.top = `${e.clientY - offsetY}px`;
-      });
-
-      document.addEventListener('mouseup', () => isDown = false);
+  document.addEventListener('mouseup', () => {
+    if (isDown) {
+      isDown = false;
+      header.style.cursor = 'grab';
     }
-
-    // Dark Mode Toggle
-    document.getElementById('toggleTheme').addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-    });
-
-    window.addEventListener('DOMContentLoaded', () => {
-  if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    toggleDarkMode();
-  }
-});
+  });
+}
 
   </script>
+
+  
   
 
 </body>
