@@ -166,7 +166,6 @@ body {
   }
 /* Window Page Link*/
   a {
-    color: ;
   }
 
 /* Window Page Link Dark Mode*/
@@ -289,3 +288,4 @@ a {
   display: block;
   border-radius: 12px;    /* Match container rounding */
 }
+
